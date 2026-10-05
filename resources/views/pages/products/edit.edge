@@ -1,0 +1,13 @@
+@layouts.app({ title: 'Editar producto' })
+  @page({ title: `Editar producto #${product.id}`, description: 'Modifica los datos y guarda los cambios.' })
+    @form({ action: `/products/${product.id}?_method=PUT`, method: 'POST', class: 'form' })
+      @include('partials/product_form')
+      <div class="form__actions">
+        @link({ route: 'products.index', class: 'btn btn--secondary' })
+          Cancelar
+        @end
+        @!button({ text: 'Actualizar', type: 'submit' })
+      </div>
+    @end
+  @end
+@end

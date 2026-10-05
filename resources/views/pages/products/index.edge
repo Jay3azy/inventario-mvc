@@ -1,0 +1,53 @@
+@layouts.app({ title: 'Productos' })
+  @page({ title: 'Inventario de productos', description: 'Gestiona los productos del inventario.' })
+    @slot('actions')
+      @link({ route: 'products.create', class: 'btn btn--primary btn--sm' })
+        + Nuevo producto
+      @end
+    @end
+
+    @if(products.length)
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(product in products)
+              <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description ?? '—' }}</td>
+                <td>${{ product.price }}</td>
+                <td>{{ product.stock }}</td>
+                <td>
+                  <div class="actions">
+                    @link({ route: 'products.edit', routeParams: { id: product.id }, class: 'btn btn--secondary btn--sm' })
+                      Editar
+                    @end
+                    @form({
+                      action: `/products/${product.id}?_method=DELETE`,
+                      method: 'POST',
+                      onsubmit: "return confirm('¿Eliminar este producto?')",
+                    })
+                      <button type="submit" class="btn btn--secondary btn--sm btn--danger">Eliminar</button>
+                    @end
+                  </div>
+                </td>
+              </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    @else
+      <p class="muted">Todavía no hay productos. Crea el primero.</p>
+    @end
+  @end
+@end

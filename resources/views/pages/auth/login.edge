@@ -1,0 +1,45 @@
+@layouts.auth()
+  <h1 class="auth__title">Iniciar sesión</h1>
+  <p class="auth__sub">Ingresa con tu correo y contraseña para acceder al inventario.</p>
+  @form({
+    route: 'session.store',
+    method: 'POST',
+    class: 'auth__form',
+    'x-data': '{ submitting: false }',
+    'x-on:submit': 'submitting = true',
+  })
+    @field.root({ name: 'email' })
+      @!field.label({ text: 'Correo electrónico' })
+      @!input.control({
+        type: 'email',
+        autocomplete: 'username',
+        placeholder: 'tucorreo@ejemplo.com',
+      })
+      @!field.error()
+    @end
+    @field.root({ name: 'password' })
+      @!field.label({ text: 'Contraseña' })
+      @!input.control({
+        type: 'password',
+        autocomplete: 'current-password',
+        placeholder: '********',
+      })
+      @!field.error()
+    @end
+    @!button({
+      text: 'Ingresar',
+      type: 'submit',
+      block: true,
+      style: 'margin-top: 4px;',
+      'x-bind:disabled': 'submitting',
+      'x-text': "submitting ? 'Ingresando...' : 'Ingresar'",
+    })
+  @end
+
+  <p class="auth__foot">
+    ¿No tienes cuenta?
+    @link({ route: 'new_account.create', class: 'il' })
+      Crear una cuenta
+    @end
+  </p>
+@end

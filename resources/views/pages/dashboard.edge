@@ -1,0 +1,14 @@
+@layouts.app({ title: 'Dashboard' })
+  @page()
+    <div class="empty">
+      <div class="empty__mark">
+        @svg('lucide:layout-grid', { width: 22, height: 22 })
+      </div>
+      <h1>Bienvenido al inventario</h1>
+      <p>
+        Desde aquí puedes gestionar los productos: crear, ver, editar y eliminar.
+      </p>
+      <a href="/products" class="btn btn--primary">Ir al inventario</a>
+    </div>
+  @end
+@end

@@ -1,0 +1,59 @@
+@layouts.auth()
+  <h1 class="auth__title">Crear cuenta</h1>
+  <p class="auth__sub">Regístrate para gestionar el inventario.</p>
+  @form({
+    route: 'new_account.store',
+    method: 'POST',
+    class: 'auth__form',
+    'x-data': '{ submitting: false }',
+    'x-on:submit': 'submitting = true',
+  })
+    @field.root({ name: 'fullName' })
+      @!field.label({ text: 'Nombre completo' })
+      @!input.control({ autocomplete: 'name', placeholder: 'Ej. José Ortiz' })
+      @!field.error()
+    @end
+    @field.root({ name: 'email' })
+      @!field.label({ text: 'Correo electrónico' })
+      @!input.control({
+        type: 'email',
+        autocomplete: 'email',
+        placeholder: 'tucorreo@ejemplo.com',
+      })
+      @!field.error()
+    @end
+    @field.root({ name: 'password' })
+      @!field.label({ text: 'Contraseña' })
+      @!input.control({
+        type: 'password',
+        autocomplete: 'new-password',
+        placeholder: '********',
+      })
+      @!field.error()
+    @end
+    @field.root({ name: 'passwordConfirmation' })
+      @!field.label({ text: 'Confirmar contraseña' })
+      @!input.control({
+        type: 'password',
+        autocomplete: 'new-password',
+        placeholder: '********',
+      })
+      @!field.error()
+    @end
+    @!button({
+      text: 'Crear cuenta',
+      type: 'submit',
+      block: true,
+      style: 'margin-top: 4px;',
+      'x-bind:disabled': 'submitting',
+      'x-text': "submitting ? 'Creando...' : 'Crear cuenta'",
+    })
+  @end
+
+  <p class="auth__foot">
+    ¿Ya tienes cuenta?
+    @link({ route: 'session.create', class: 'il' })
+      Iniciar sesión
+    @end
+  </p>
+@end

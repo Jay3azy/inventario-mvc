@@ -1,0 +1,25 @@
+@field.root({ name: 'name' })
+  @!field.label({ text: 'Nombre' })
+  @!input.control({ value: product?.name, placeholder: 'Ej. Teclado mecánico' })
+  @!field.error()
+@end
+
+@field.root({ name: 'description' })
+  @!field.label({ text: 'Descripción (opcional)' })
+  @!textarea.control({ value: product?.description, rows: 3 })
+  @!field.error()
+@end
+
+<div class="field-row">
+  @field.root({ name: 'price' })
+    @!field.label({ text: 'Precio ($)' })
+    @!input.control({ type: 'number', step: '0.01', value: product ? `${product.price}` : '' })
+    @!field.error()
+  @end
+
+  @field.root({ name: 'stock' })
+    @!field.label({ text: 'Stock' })
+    @!input.control({ type: 'number', step: '1', value: product ? `${product.stock}` : '' })
+    @!field.error()
+  @end
+</div>

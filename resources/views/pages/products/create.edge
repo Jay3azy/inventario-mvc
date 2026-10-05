@@ -1,0 +1,13 @@
+@layouts.app({ title: 'Nuevo producto' })
+  @page({ title: 'Nuevo producto', description: 'Completa los datos del producto.' })
+    @form({ action: '/products', method: 'POST', class: 'form' })
+      @include('partials/product_form')
+      <div class="form__actions">
+        @link({ route: 'products.index', class: 'btn btn--secondary' })
+          Cancelar
+        @end
+        @!button({ text: 'Guardar', type: 'submit' })
+      </div>
+    @end
+  @end
+@end

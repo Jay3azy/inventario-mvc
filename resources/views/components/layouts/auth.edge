@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  data-theme="{{
+    request.plainCookie('app_theme', {
+      defaultValue: 'light',
+      encoded: false,
+    })
+  }}"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inventario MVC</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('dumper')
+  </head>
+  <body>
+    <div class="auth">
+      <div class="auth__form-col">
+        @!logo({ size: 28 })
+        <div class="auth__form-wrap">{{{ await $slots.main() }}}</div>
+        <div style="height: 20px;"></div>
+      </div>
+
+      <aside class="auth__aside">
+        <div class="auth__aside-top">
+          @!themeToggle()
+        </div>
+
+        <p class="auth__quote">Inventario MVC: CRUD de productos con autenticación.</p>
+
+        <div>
+          <div class="pitch__t">Proyecto de Ingeniería Web</div>
+          <p class="pitch__p">
+            Construido con AdonisJS siguiendo el patrón Modelo-Vista-Controlador.
+          </p>
+        </div>
+      </aside>
+    </div>
+    @include('partials/flash_alerts')
+  </body>
+</html>
