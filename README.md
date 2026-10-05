@@ -6,7 +6,7 @@ Aplicación web para gestionar un inventario de productos, desarrollada con **Ad
 
 ##  Demostración
 
-Video de funcionamiento: [Ver en YouTube/Loom](ENLACE_AQUI)
+Video de funcionamiento: https://youtu.be/TAJ-WkePg9c
 
 ##  Funcionalidades
 
@@ -109,13 +109,13 @@ Además, todos los formularios están protegidos contra ataques **CSRF**.
 | POST | `/login` | Iniciar sesión | No (solo invitados) |
 | GET | `/signup` | Formulario de registro | No (solo invitados) |
 | POST | `/signup` | Crear cuenta | No (solo invitados) |
-| POST | `/logout` | Cerrar sesión | ✅ |
-| GET | `/products` | Listar productos | ✅ |
-| GET | `/products/create` | Formulario de creación | ✅ |
-| POST | `/products` | Guardar producto | ✅ |
-| GET | `/products/:id/edit` | Formulario de edición | ✅ |
-| PUT | `/products/:id` | Actualizar producto | ✅ |
-| DELETE | `/products/:id` | Eliminar producto | ✅ |
+| POST | `/logout` | Cerrar sesión | 
+| GET | `/products` | Listar productos | 
+| GET | `/products/create` | Formulario de creación | 
+| POST | `/products` | Guardar producto | 
+| GET | `/products/:id/edit` | Formulario de edición | 
+| PUT | `/products/:id` | Actualizar producto | 
+| DELETE | `/products/:id` | Eliminar producto | 
 
 ##  Instalación y ejecución
 
