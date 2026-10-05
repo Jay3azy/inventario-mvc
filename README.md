@@ -129,7 +129,7 @@ Además, todos los formularios están protegidos contra ataques **CSRF**.
 
 ```bash
 # 1. Clonar el repositorio
-git clone ENLACE_DEL_REPO
+git clone https://github.com/Jay3azy/inventario-mvc.git
 cd inventario-mvc
 
 # 2. Instalar dependencias
