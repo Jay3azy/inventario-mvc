@@ -1,12 +1,19 @@
-#  Inventario MVC
+# Inventario MVC
 
 Aplicación web para gestionar un inventario de productos, desarrollada con **AdonisJS** aplicando el patrón **Modelo-Vista-Controlador (MVC)**. Incluye operaciones CRUD completas y un sistema de autenticación que protege la sección de gestión.
 
 > Proyecto de la materia **Ingeniería Web**: CRUD y Login con MVC.
 
-##  Demostración
+##  Demo en línea
 
-Video de funcionamiento: https://youtu.be/TAJ-WkePg9c
+**Aplicación desplegada:** (https://inventario-mvc.onrender.com)
+
+> Desplegada en Render (plan gratuito) con PostgreSQL en Neon. Si el servicio estuvo inactivo, la primera carga puede tardar hasta un minuto.
+
+##  Videos
+
+- Funcionamiento de la aplicación: [Ver en YouTube](https://youtu.be/TAJ-WkePg9c)
+- Despliegue y explicación del código: [Ver en YouTube](https://youtu.be/UeuQq_GrP_M)
 
 ##  Funcionalidades
 
@@ -26,7 +33,9 @@ Video de funcionamiento: https://youtu.be/TAJ-WkePg9c
 | Lucid ORM | Modelos y acceso a la base de datos |
 | Edge | Motor de plantillas para las vistas |
 | VineJS | Validación de formularios |
-| SQLite | Base de datos |
+| SQLite | Base de datos en desarrollo |
+| PostgreSQL ([Neon](https://neon.com/)) | Base de datos en producción |
+| [Render](https://render.com/) | Hosting de la aplicación |
 | Vite | Empaquetado de estilos y scripts |
 
 ##  Arquitectura MVC
@@ -60,6 +69,8 @@ inventario-mvc/
 │   └── validators/
 │       ├── product.ts                # Reglas y mensajes en español
 │       └── user.ts
+├── config/
+│   └── database.ts                   # Conexiones SQLite y PostgreSQL
 ├── database/
 │   └── migrations/                   # Definición de las tablas
 ├── resources/
@@ -70,10 +81,20 @@ inventario-mvc/
 │       ├── partials/                 # product_form.edge, flash_alerts.edge
 │       └── components/layouts/       # Layouts de la app
 └── start/
+    ├── env.ts                        # Validación de variables de entorno
     └── routes.ts                     # Rutas públicas y protegidas
 ```
 
-##  Seguridad
+##  Base de datos
+
+- Los datos **no están escritos en el código**: los productos y usuarios se consultan y guardan en la base de datos mediante los modelos.
+- Las tablas se definen con **migraciones** y se crean con `node ace migration:run`, tanto en SQLite como en PostgreSQL.
+- La aplicación elige la base de datos con la variable `DB_CONNECTION`:
+  - `sqlite` (por defecto): archivo local en `tmp/db.sqlite3`, para desarrollo.
+  - `pg`: PostgreSQL usando la cadena de conexión `DATABASE_URL`, para producción.
+- Las credenciales se leen de **variables de entorno** y nunca se suben al repositorio.
+
+## Seguridad
 
 ### Rutas protegidas
 
@@ -101,7 +122,7 @@ $scrypt$n=16384,r=8,p=1$eidpLU0FSgpOmN/7zLSQWA$6jycXjs0afuQ...
 
 Además, todos los formularios están protegidos contra ataques **CSRF**.
 
-##  Rutas
+## 🗺️ Rutas
 
 | Método | Ruta | Acción | Protegida |
 |---|---|---|---|
@@ -117,11 +138,11 @@ Además, todos los formularios están protegidos contra ataques **CSRF**.
 | PUT | `/products/:id` | Actualizar producto | 
 | DELETE | `/products/:id` | Eliminar producto | 
 
-##  Instalación y ejecución
+##  Instalación local
 
 ### Requisitos
 
-- [Node.js](https://nodejs.org/) 24 o superior (probado con v24.18)
+- [Node.js](https://nodejs.org/) 24 o superior
 - npm
 - Git
 
@@ -151,13 +172,59 @@ npm run dev
 
 Abrir en el navegador: **http://localhost:3333**
 
+Por defecto se usa SQLite. Para trabajar con PostgreSQL, en el `.env` define `DB_CONNECTION=pg` y la `DATABASE_URL` correspondiente.
+
 ### Uso
 
 1. Ir a **Crear cuenta** y registrar un usuario.
 2. Iniciar sesión con el correo y la contraseña.
 3. Gestionar los productos desde la sección **Productos**.
 
+##  Despliegue
 
+La aplicación está desplegada con esta arquitectura:
+
+```
+Navegador ──HTTPS──▶ Render (AdonisJS) ──SSL──▶ Neon (PostgreSQL)
+```
+
+Se separó la base de datos porque el disco del plan gratuito de Render no es persistente: un archivo SQLite se perdería en cada reinicio o nuevo despliegue.
+
+### Base de datos en Neon
+
+1. Crear un proyecto en [Neon](https://neon.com/) (región US East).
+2. Copiar la **connection string** del proyecto.
+3. Las tablas se crean automáticamente con las migraciones al iniciar la aplicación en Render.
+
+### Web Service en Render
+
+Servicio conectado al repositorio de GitHub, rama `main`, con despliegue automático en cada push.
+
+| Configuración | Valor |
+|---|---|
+| Runtime | Node |
+| Build Command | `npm ci --include=dev && npm run build && cd build && npm ci --omit=dev` |
+| Start Command | `cd build && node ace migration:run --force && node bin/server.js` |
+
+- El **build** instala las dependencias, compila TypeScript a JavaScript en la carpeta `build/` e instala ahí solo las dependencias de producción.
+- El **start** aplica las migraciones pendientes (`--force` es obligatorio en producción) y arranca el servidor.
+
+### Variables de entorno en producción
+
+| Variable | Valor |
+|---|---|
+| `NODE_VERSION` | `24` |
+| `NODE_ENV` | `production` |
+| `HOST` | `0.0.0.0` |
+| `TZ` | `UTC` |
+| `LOG_LEVEL` | `info` |
+| `APP_KEY` | Clave aleatoria exclusiva de producción |
+| `APP_URL` | URL pública del servicio en Render |
+| `SESSION_DRIVER` | `cookie` |
+| `DB_CONNECTION` | `pg` |
+| `DATABASE_URL` | Connection string de Neon |
+
+`PORT` no se define: Render la asigna automáticamente. Los valores de `APP_KEY` y `DATABASE_URL` son secretos y solo se configuran en el panel de Render.
 
 ##  Autor
 
